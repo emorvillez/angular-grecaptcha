@@ -3,6 +3,11 @@ angular-grecaptcha
 
 Angular implementation of Google recaptcha: https://developers.google.com/recaptcha/
 
+##bower
+
+`bower install angular-recaptcha --save`
+
+## example
 
 ```HTML
 <!doctype html>
