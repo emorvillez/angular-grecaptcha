@@ -28,7 +28,7 @@ angular.module('grecaptcha', [])
             s.appendChild(scriptTag);
         };
 
-        this.$get = function($q, $window, $document) {
+        this.$get = ['$q', '$window', '$document', function($q, $window, $document) {
             var deferred = $q.defer();
             
             // Define method called in global scope when recaptcha script is loaded.   
@@ -59,9 +59,9 @@ angular.module('grecaptcha', [])
                     $window.grecaptcha.reset();
                 }
             };
-        };
+        }];
 
-    }).directive('grecaptcha', function(grecaptcha) {
+    }).directive('grecaptcha', ['grecaptcha', function(grecaptcha) {
         return {
             restrict: 'A',
             require: 'ngModel',
@@ -77,4 +77,4 @@ angular.module('grecaptcha', [])
                 scope.$on('$destroy', grecaptcha.destroy);
             }
         };
-    });
+    }]);
