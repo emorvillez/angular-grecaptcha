@@ -7,6 +7,21 @@ Angular implementation of Google recaptcha: https://developers.google.com/recapt
 
 `bower install angular-recaptcha --save`
 
+##configuration
+
+>grecaptchaProvider.setLanguage(languageCode)
+
+list of ***languageCode*** : https://developers.google.com/recaptcha/docs/language
+
+>grecaptchaProvider.setParameters(parameters);
+
+parameters = {
+	***sitekey***: 'yoursitekey',
+	theme: '***light***|dark',
+	type: 'audio|***image***,
+})
+
+
 ## example
 
 ```HTML

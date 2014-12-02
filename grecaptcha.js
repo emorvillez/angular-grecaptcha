@@ -3,11 +3,16 @@
 angular.module('grecaptcha', [])
     .provider('grecaptcha', function() {
         var _p = {},
+            _l,
             self = this,
             onloadMethod = 'onRecaptchaScriptLoaded';
 
         this.setParameters = function(parameters) {
             _p = parameters;
+        };
+
+        this.setLanguage = function(languageCode) {
+            _l = languageCode;
         };
 
         /**
@@ -18,7 +23,7 @@ angular.module('grecaptcha', [])
             scriptTag.type = 'text/javascript';
             scriptTag.async = true;
             scriptTag.defer = true;
-            scriptTag.src = '//www.google.com/recaptcha/api.js?onload=' + onloadMethod + '&render=explicit';
+            scriptTag.src = '//www.google.com/recaptcha/api.js?onload=' + onloadMethod + '&render=explicit' + (_l ? '&hl=' + _l : '');
             var s = $document.getElementsByTagName('body')[0];
             s.appendChild(scriptTag);
         };
