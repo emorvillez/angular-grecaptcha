@@ -55,7 +55,7 @@ angular.module('grecaptcha', [])
                         $window.grecaptcha.render(element, _p);
                     });
                 },
-                destroy: function() {
+                reset: function() {
                     $window.grecaptcha.reset();
                 }
             };
@@ -74,7 +74,7 @@ angular.module('grecaptcha', [])
                 grecaptcha.create(element[0], ngModelCtrl);
 
                 // Destroy Element
-                scope.$on('$destroy', grecaptcha.destroy);
+                scope.$on('$destroy', grecaptcha.reset);
             }
         };
     }]);
