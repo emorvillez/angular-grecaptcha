@@ -28,7 +28,7 @@ angular.module('grecaptcha', [])
             s.appendChild(scriptTag);
         };
 
-        this.$get = ['$q', '$window', '$document', function($q, $window, $document) {
+        this.$get = ['$q', '$window', '$document', '$rootScope', function($q, $window, $document, $rootScope) {
             var deferred = $q.defer();
             
             // Define method called in global scope when recaptcha script is loaded.   
@@ -50,7 +50,9 @@ angular.module('grecaptcha', [])
                     deferred.promise.then(function() {
                         _p.callback = function(response) {
                             // set the response value in ngModel
-                            ngModelCtrl.$setViewValue(response);
+                            $rootScope.$apply(function(){
+                                ngModelCtrl.$setViewValue(response);    
+                            });
                         };
                         $window.grecaptcha.render(element, _p);
                     });
