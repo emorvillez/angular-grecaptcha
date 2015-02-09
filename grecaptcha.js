@@ -43,6 +43,9 @@ angular.module('grecaptcha', [])
             }
 
             return {
+                updateParameters: function(parameters) {
+                    angular.extend(_p, parameters);
+                },
                 create: function(element, ngModelCtrl) {
                     if (!_p || !_p.sitekey) {
                         throw new Error('Please provide your sitekey via setParameters');
