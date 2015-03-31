@@ -50,13 +50,14 @@ angular.module('grecaptcha', [])
                     if (!_p || !_p.sitekey) {
                         throw new Error('Please provide your sitekey via setParameters');
                     }
+                    function setValue(value) {
+                        $rootScope.$apply(function(){
+                            ngModelCtrl.$setViewValue(value);
+                        });
+                    }
                     deferred.promise.then(function() {
-                        _p.callback = function(response) {
-                            // set the response value in ngModel
-                            $rootScope.$apply(function(){
-                                ngModelCtrl.$setViewValue(response);    
-                            });
-                        };
+                        _p.callback = setValue;
+                        _p['expired-callback'] = setValue; // without arguments, value will be undefined
                         $window.grecaptcha.render(element, _p);
                     });
                 },
