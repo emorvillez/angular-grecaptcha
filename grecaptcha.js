@@ -52,8 +52,9 @@ angular.module('grecaptcha', [])
                 updateParameters: function(parameters) {
                     angular.extend(_p, parameters);
                 },
-                create: function(element, ngModelCtrl) {
-                    if (!_p || !_p.sitekey) {
+                create: function(element, ngModelCtrl, params) {
+                    params = angular.extend({}, _p, params);
+                    if (!params.sitekey) {
                         throw new Error('Please provide your sitekey via setParameters');
                     }
 
@@ -65,7 +66,7 @@ angular.module('grecaptcha', [])
 
                     _p.callback = setValue;
                     _p['expired-callback'] = setValue; // without arguments, value will be undefined
-                    $window.grecaptcha.render(element, _p);
+                    $window.grecaptcha.render(element, params);
                 },
                 reset: function() {
                     $window.grecaptcha.reset();
@@ -79,14 +80,15 @@ angular.module('grecaptcha', [])
             restrict: 'A',
             require: 'ngModel',
             scope: {
-                ngModel: '='
+                ngModel: '=',
+                params: '=?grecaptchaParams'
             },
             link: function(scope, element, attrs, ngModelCtrl) {
 
                 grecaptcha.init()
                     .then(function() {
                         // Create Element
-                        grecaptcha.create(element[0], ngModelCtrl);
+                        grecaptcha.create(element[0], ngModelCtrl, scope.params);
 
                         // Destroy Element
                         scope.$on('$destroy', grecaptcha.reset);
