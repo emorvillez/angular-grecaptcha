@@ -64,8 +64,8 @@ angular.module('grecaptcha', [])
                         });
                     }
 
-                    _p.callback = setValue;
-                    _p['expired-callback'] = setValue; // without arguments, value will be undefined
+                    params.callback = setValue;
+                    params['expired-callback'] = setValue; // without arguments, value will be undefined
                     $window.grecaptcha.render(element, params);
                 },
                 reset: function() {
