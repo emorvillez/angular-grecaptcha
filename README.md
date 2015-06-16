@@ -21,6 +21,15 @@ parameters = {
 	type: 'audio|***image***,
 })
 
+##runtime configuration
+
+>grecaptcha.updateParameters(parameters);
+
+##inline configuration
+
+```HTML
+<div grecaptcha ng-model="captcha" grecaptcha-params="{theme:'dark'}"></div>
+```
 
 ## example
 

@@ -29,37 +29,44 @@ angular.module('grecaptcha', [])
         };
 
         this.$get = ['$q', '$window', '$document', '$rootScope', function($q, $window, $document, $rootScope) {
-            var deferred = $q.defer();
-            
-            // Define method called in global scope when recaptcha script is loaded.   
-            $window[onloadMethod] = function() {
-                deferred.resolve();
-            };
-            
-            if (!$window.grecaptcha) {
-                self._createScript($document[0]);
-            } else {
-                deferred.resolve();
-            }
 
             return {
+                init: function() {
+                    if ($window.grecaptcha) {
+                        return $q.when();
+                    }
+                    var deferred = $q.defer();
+                    // Define method called in global scope when recaptcha script is loaded.
+                    $window[onloadMethod] = function() {
+                        deferred.resolve();
+                    };
+                    self._createScript($document[0]);
+                    return deferred.promise;
+                },
+                setLanguage: function(languageCode) {
+                    if (_l === languageCode) return;
+
+                    _l = languageCode;
+                    delete $window.grecaptcha; // force reload scripts with new language
+                },
                 updateParameters: function(parameters) {
                     angular.extend(_p, parameters);
                 },
-                create: function(element, ngModelCtrl) {
-                    if (!_p || !_p.sitekey) {
+                create: function(element, ngModelCtrl, params) {
+                    params = angular.extend({}, _p, params);
+                    if (!params.sitekey) {
                         throw new Error('Please provide your sitekey via setParameters');
                     }
+
                     function setValue(value) {
-                        $rootScope.$apply(function(){
+                        $rootScope.$apply(function() {
                             ngModelCtrl.$setViewValue(value);
                         });
                     }
-                    deferred.promise.then(function() {
-                        _p.callback = setValue;
-                        _p['expired-callback'] = setValue; // without arguments, value will be undefined
-                        $window.grecaptcha.render(element, _p);
-                    });
+
+                    _p.callback = setValue;
+                    _p['expired-callback'] = setValue; // without arguments, value will be undefined
+                    $window.grecaptcha.render(element, params);
                 },
                 reset: function() {
                     $window.grecaptcha.reset();
@@ -67,20 +74,25 @@ angular.module('grecaptcha', [])
             };
         }];
 
-    }).directive('grecaptcha', ['grecaptcha', function(grecaptcha) {
+    })
+    .directive('grecaptcha', ['grecaptcha', function(grecaptcha) {
         return {
             restrict: 'A',
             require: 'ngModel',
             scope: {
-                ngModel: '='
+                ngModel: '=',
+                params: '=?grecaptchaParams'
             },
             link: function(scope, element, attrs, ngModelCtrl) {
 
-                // Create Element
-                grecaptcha.create(element[0], ngModelCtrl);
+                grecaptcha.init()
+                    .then(function() {
+                        // Create Element
+                        grecaptcha.create(element[0], ngModelCtrl, scope.params);
 
-                // Destroy Element
-                scope.$on('$destroy', grecaptcha.reset);
+                        // Destroy Element
+                        scope.$on('$destroy', grecaptcha.reset);
+                    });
             }
         };
     }]);
