@@ -59,7 +59,7 @@ parameters = {
 <script src="grecaptcha.js"></script>
 <script type="text/javascript">
     angular
-    .module('myModule', ['grecaptcha'])
+    .module('myModule', ['vcRecaptcha'])
     .config(function(grecaptchaProvider) {
         grecaptchaProvider.setParameters({
             sitekey: 'your key here',
