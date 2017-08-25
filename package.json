@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chuckyblack/angular-grecaptcha.git"
+    "url": "git://github.com/emorvillez/angular-grecaptcha.git"
   },
   "author": "emorvillez",
   "license": "MIT",
