@@ -3,11 +3,16 @@ angular-grecaptcha
 
 Angular implementation of Google recaptcha: https://developers.google.com/recaptcha/
 
-##bower
-
+bower
+-----
 `bower install angular-recaptcha --save`
 
-##configuration
+npm
+-----
+`npm install angular-recaptcha --save-dev`
+
+configuration
+-----
 
 >grecaptchaProvider.setLanguage(languageCode)
 
@@ -21,8 +26,8 @@ parameters = {
 	type: 'audio|***image***,
 })
 
-##runtime configuration
-
+runtime configuration
+-----
 >grecaptcha.updateParameters(parameters);
 
 ##inline configuration
@@ -31,7 +36,8 @@ parameters = {
 <div grecaptcha ng-model="captcha" grecaptcha-params="{theme:'dark'}"></div>
 ```
 
-## example
+example
+-----
 
 ```HTML
 <!doctype html>
